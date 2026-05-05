@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.net.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<!--
+    Vista principal de la aplicación Iron - Reductor de Texturas.
+    Contiene:
+    - Barra superior con selector de carpeta y controles
+    - TabPane con pestañas para Blocks, Items, Environment y Entity
+    - Controles de selección múltiple y ordenamiento
+    - Barra de estado inferior
+    
+    @author vmonge
+-->
+<BorderPane xmlns:fx="http://javafx.com/fxml/1" 
+            xmlns="http://javafx.com/javafx/8"
+            fx:controller="controller.FXMLInicioController"
+            styleClass="mainPane">
+    
+    <stylesheets>
+        <URL value="@fxmlinicio.css" />
+    </stylesheets>
+    
+    <!-- BARRA SUPERIOR -->
+    <top>
+        <VBox styleClass="header-container">
+            <!-- Título -->
+            <HBox alignment="CENTER" styleClass="title-bar">
+                <Label text="Redimensionador de texturas | Minecraft Bedrock" styleClass="app-title"/>
+            </HBox>
+            
+            <!-- Controles principales -->
+            <HBox alignment="CENTER_LEFT" spacing="15" styleClass="toolbar">
+                <padding>
+                    <Insets top="10" right="20" bottom="10" left="20"/>
+                </padding>
+                
+                <!-- Selector de carpeta -->
+                <Label text="Carpeta raíz:"/>
+                <TextField fx:id="txtRootPath" 
+                           prefWidth="350" 
+                           promptText="Selecciona la carpeta del resource pack..."
+                           editable="false"/>
+                <Button fx:id="btnSelectFolder" 
+                        text="Examinar..." 
+                        onAction="#handleSelectFolder"
+                        styleClass="btn-primary"/>
+                
+                <!-- Separador -->
+                <Region HBox.hgrow="ALWAYS"/>
+                
+                <!-- Factor de escala -->
+                <Label text="Factor:"/>
+                <ComboBox fx:id="cmbScaleFactor" prefWidth="70"/>
+                
+                <!-- Algoritmo de redimensionamiento -->
+                <Label text="Algoritmo:"/>
+                <ComboBox fx:id="cmbAlgorithm" prefWidth="160"/>
+                
+                <!-- Botón cargar -->
+                <Button fx:id="btnLoad" 
+                        text="Cargar Texturas" 
+                        onAction="#handleLoadTextures"
+                        styleClass="btn-success"
+                        disable="true"/>
+            </HBox>
+            
+            <!-- Barra de herramientas secundaria -->
+            <HBox alignment="CENTER_LEFT" spacing="15" styleClass="toolbar-secondary">
+                <padding>
+                    <Insets top="8" right="20" bottom="8" left="20"/>
+                </padding>
+                
+                <!-- Modo Selección -->
+                <Label text="Selección:"/>
+                <ToggleButton fx:id="btnSelectionMode" 
+                              text="Activar Selección" 
+                              onAction="#handleToggleSelectionMode"
+                              styleClass="btn-toggle"/>
+                
+                <Button fx:id="btnProcessSelected" 
+                        text="Procesar Seleccionados (0)" 
+                        onAction="#handleProcessSelected"
+                        styleClass="btn-warning"
+                        disable="true"
+                        visible="false"
+                        managed="false"/>
+                
+                <Button fx:id="btnSelectAll" 
+                        text="Seleccionar Todo" 
+                        onAction="#handleSelectAll"
+                        styleClass="btn-secondary"
+                        visible="false"
+                        managed="false"/>
+                
+                <Button fx:id="btnDeselectAll" 
+                        text="Deseleccionar Todo" 
+                        onAction="#handleDeselectAll"
+                        styleClass="btn-secondary"
+                        visible="false"
+                        managed="false"/>
+                
+                <!-- Separador -->
+                <Region HBox.hgrow="ALWAYS"/>
+                
+                <!-- Ordenamiento -->
+                <Label text="Ordenar por:"/>
+                <ComboBox fx:id="cmbSortOrder" prefWidth="180"/>
+                
+            </HBox>
+        </VBox>
+    </top>
+    
+    <!-- CONTENIDO PRINCIPAL - TABPANE -->
+    <center>
+        <TabPane fx:id="tabPane" tabClosingPolicy="UNAVAILABLE" styleClass="texture-tabs">
+            
+            <!-- Pestaña de Blocks -->
+            <!-- El ScrollPane se deja sin contenido en el FXML; el controller
+                 instancia un CanvasTextureGrid y lo asigna como content. -->
+            <Tab text="Blocks" closable="false">
+                <ScrollPane fx:id="scrollBlocks" 
+                           fitToWidth="true" 
+                           styleClass="texture-scroll"/>
+            </Tab>
+            
+            <!-- Pestaña de Items -->
+            <Tab text="Items" closable="false">
+                <ScrollPane fx:id="scrollItems" 
+                           fitToWidth="true" 
+                           styleClass="texture-scroll"/>
+            </Tab>
+            
+            <!-- Pestaña de Environment -->
+            <Tab text="Environment" closable="false">
+                <ScrollPane fx:id="scrollEnvironment" 
+                           fitToWidth="true" 
+                           styleClass="texture-scroll"/>
+            </Tab>
+            
+            <!-- Pestaña de Entity -->
+            <Tab text="Entity" closable="false">
+                <ScrollPane fx:id="scrollEntity" 
+                           fitToWidth="true" 
+                           styleClass="texture-scroll"/>
+            </Tab>
+            
+        </TabPane>
+    </center>
+    
+    <!-- BARRA DE ESTADO INFERIOR -->
+    <bottom>
+        <HBox styleClass="status-bar" spacing="20">
+            <padding>
+                <Insets top="8" right="20" bottom="8" left="20"/>
+            </padding>
+            
+            <!-- Información de carga -->
+            <Label fx:id="lblStatus" text="Listo"/>
+            
+            <!-- Separador -->
+            <Region HBox.hgrow="ALWAYS"/>
+            
+            <!-- Contadores -->
+            <Label fx:id="lblBlocksCount" text="Blocks: 0"/>
+            <Label fx:id="lblItemsCount" text="Items: 0"/>
+            <Label fx:id="lblEnvironmentCount" text="Environment: 0"/>
+            <Label fx:id="lblEntityCount" text="Entity: 0"/>
+            
+            <!-- Barra de progreso -->
+            <ProgressBar fx:id="progressBar" prefWidth="200" visible="false"/>
+        </HBox>
+    </bottom>
+    
+</BorderPane>

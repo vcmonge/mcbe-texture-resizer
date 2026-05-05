@@ -1,0 +1,397 @@
+/*
+ * Estilos CSS para Iron - Reductor de Texturas
+ * 
+ * Paleta de colores:
+ * - Principal: #4CAF50 (verde)
+ * - Acento: #2196F3 (azul)
+ * - Fondo: #f5f5f5 (gris claro)
+ * - Texto: #333333 (gris oscuro)
+ * 
+ * @author vmonge
+ */
+
+/* ==================== CONTENEDOR PRINCIPAL ==================== */
+
+.mainPane {
+    -fx-background-color: #f0f0f0;
+}
+
+/* ==================== BARRA SUPERIOR ==================== */
+
+.header-container {
+    -fx-background-color: linear-gradient(to bottom, #ffffff, #f8f8f8);
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.15), 10, 0, 0, 3);
+}
+
+.title-bar {
+    -fx-background-color: #4CAF50;
+    -fx-padding: 12 20 12 20;
+}
+
+.app-title {
+    -fx-font-size: 18px;
+    -fx-font-weight: bold;
+    -fx-text-fill: white;
+}
+
+.toolbar {
+    -fx-background-color: #ffffff;
+    -fx-border-color: #e0e0e0;
+    -fx-border-width: 0 0 1 0;
+}
+
+/* ==================== CONTROLES ==================== */
+
+.text-field {
+    -fx-background-color: white;
+    -fx-border-color: #cccccc;
+    -fx-border-radius: 4;
+    -fx-background-radius: 4;
+    -fx-padding: 8 12;
+    -fx-font-size: 13px;
+}
+
+.text-field:focused {
+    -fx-border-color: #4CAF50;
+    -fx-effect: dropshadow(gaussian, rgba(76,175,80,0.3), 8, 0, 0, 0);
+}
+
+.combo-box {
+    -fx-background-color: white;
+    -fx-border-color: #cccccc;
+    -fx-border-radius: 4;
+    -fx-background-radius: 4;
+    -fx-font-size: 13px;
+}
+
+.combo-box:focused {
+    -fx-border-color: #4CAF50;
+}
+
+/* ==================== BOTONES ==================== */
+
+.button {
+    -fx-background-color: #e0e0e0;
+    -fx-text-fill: #333333;
+    -fx-font-size: 13px;
+    -fx-padding: 8 16;
+    -fx-background-radius: 4;
+    -fx-cursor: hand;
+}
+
+.button:hover {
+    -fx-background-color: #d0d0d0;
+}
+
+.button:pressed {
+    -fx-background-color: #c0c0c0;
+}
+
+.button:disabled {
+    -fx-opacity: 0.5;
+    -fx-cursor: default;
+}
+
+.btn-primary {
+    -fx-background-color: #2196F3;
+    -fx-text-fill: white;
+}
+
+.btn-primary:hover {
+    -fx-background-color: #1976D2;
+}
+
+.btn-primary:pressed {
+    -fx-background-color: #1565C0;
+}
+
+.btn-success {
+    -fx-background-color: #4CAF50;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+}
+
+.btn-success:hover {
+    -fx-background-color: #43A047;
+}
+
+.btn-success:pressed {
+    -fx-background-color: #388E3C;
+}
+
+.btn-secondary {
+    -fx-background-color: #757575;
+    -fx-text-fill: white;
+}
+
+.btn-secondary:hover {
+    -fx-background-color: #616161;
+}
+
+.btn-secondary:pressed {
+    -fx-background-color: #424242;
+}
+
+.btn-warning {
+    -fx-background-color: #ff9800;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+}
+
+.btn-warning:hover {
+    -fx-background-color: #f57c00;
+}
+
+.btn-warning:pressed {
+    -fx-background-color: #ef6c00;
+}
+
+.btn-toggle {
+    -fx-background-color: #9e9e9e;
+    -fx-text-fill: white;
+}
+
+.btn-toggle:hover {
+    -fx-background-color: #757575;
+}
+
+.btn-toggle:selected {
+    -fx-background-color: #ff9800;
+    -fx-text-fill: white;
+}
+
+.btn-toggle:selected:hover {
+    -fx-background-color: #f57c00;
+}
+
+/* ==================== BARRA DE HERRAMIENTAS SECUNDARIA ==================== */
+
+.toolbar-secondary {
+    -fx-background-color: #f5f5f5;
+    -fx-border-color: #e0e0e0;
+    -fx-border-width: 0 0 1 0;
+}
+
+/* ==================== PESTAÑAS ==================== */
+
+.texture-tabs {
+    -fx-background-color: transparent;
+}
+
+.texture-tabs .tab-header-area {
+    -fx-padding: 5 10 0 10;
+}
+
+.texture-tabs .tab-header-background {
+    -fx-background-color: #f5f5f5;
+}
+
+.texture-tabs .tab {
+    -fx-background-color: #e8e8e8;
+    -fx-background-radius: 6 6 0 0;
+    -fx-padding: 8 20;
+}
+
+.texture-tabs .tab:selected {
+    -fx-background-color: white;
+}
+
+.texture-tabs .tab .tab-label {
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #666666;
+}
+
+.texture-tabs .tab:selected .tab-label {
+    -fx-text-fill: #4CAF50;
+}
+
+.texture-tabs .tab-content-area {
+    -fx-background-color: white;
+}
+
+/* ==================== SCROLL Y CONTENEDOR DE TEXTURAS ==================== */
+
+.texture-scroll {
+    -fx-background-color: transparent;
+    -fx-background: #fafafa;
+}
+
+.texture-scroll .viewport {
+    -fx-background-color: #fafafa;
+}
+
+.texture-scroll .scroll-bar {
+    -fx-background-color: #f0f0f0;
+}
+
+.texture-scroll .scroll-bar .thumb {
+    -fx-background-color: #cccccc;
+    -fx-background-radius: 4;
+}
+
+.texture-scroll .scroll-bar .thumb:hover {
+    -fx-background-color: #aaaaaa;
+}
+
+.texture-flow {
+    -fx-background-color: #fafafa;
+}
+
+/* ==================== TARJETA DE TEXTURA ==================== */
+/*
+ * Estilos de las tarjetas del mosaico. Definidos aquí para evitar mutaciones
+ * inline (-fx-style) por cada hover, lo cual con cientos de cards generaba
+ * stutter notable durante el scroll.
+ *
+ * - Estado normal: borde y sombra suave (sin sombra para reducir repaints).
+ * - :hover: borde verde y leve elevación (solo se aplica a la card bajo el cursor).
+ * - :selected (pseudo-clase definida en TextureCard): destaca selección múltiple.
+ */
+.texture-card {
+    -fx-background-color: white;
+    -fx-background-radius: 8;
+    -fx-border-color: #dddddd;
+    -fx-border-radius: 8;
+}
+
+.texture-card:hover {
+    -fx-background-color: #f8f8f8;
+    -fx-border-color: #4CAF50;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.15), 6, 0, 0, 2);
+}
+
+.texture-card:selected {
+    -fx-background-color: #e8f5e9;
+    -fx-border-color: #4CAF50;
+    -fx-border-width: 2;
+    -fx-effect: dropshadow(gaussian, rgba(76,175,80,0.3), 8, 0, 0, 2);
+}
+
+.texture-card-name {
+    -fx-font-weight: bold;
+    -fx-font-size: 11px;
+}
+
+.texture-card-info {
+    -fx-font-size: 10px;
+    -fx-text-fill: #666666;
+}
+
+.texture-card-button {
+    -fx-background-color: #4CAF50;
+    -fx-text-fill: white;
+    -fx-font-size: 11px;
+    -fx-cursor: hand;
+    -fx-padding: 4 10;
+}
+
+.texture-card-button:hover {
+    -fx-background-color: #45a049;
+}
+
+.texture-card-button-done {
+    -fx-background-color: #888888;
+    -fx-text-fill: white;
+    -fx-font-size: 11px;
+    -fx-cursor: default;
+}
+
+.selection-checkbox {
+    -fx-background-color: rgba(255,255,255,0.9);
+    -fx-background-radius: 4;
+    -fx-padding: 2;
+}
+
+/* ==================== BARRA DE ESTADO ==================== */
+
+.status-bar {
+    -fx-background-color: #f8f8f8;
+    -fx-border-color: #e0e0e0;
+    -fx-border-width: 1 0 0 0;
+}
+
+.status-bar .label {
+    -fx-font-size: 12px;
+    -fx-text-fill: #666666;
+}
+
+.progress-bar {
+    -fx-accent: #4CAF50;
+}
+
+.progress-bar .track {
+    -fx-background-color: #e0e0e0;
+    -fx-background-radius: 4;
+}
+
+.progress-bar .bar {
+    -fx-background-color: #4CAF50;
+    -fx-background-radius: 4;
+}
+
+/* ==================== TOOLTIPS ==================== */
+
+.tooltip {
+    -fx-background-color: rgba(50,50,50,0.9);
+    -fx-text-fill: white;
+    -fx-font-size: 12px;
+    -fx-padding: 8 12;
+    -fx-background-radius: 4;
+}
+
+/* ==================== ALERTAS ==================== */
+
+.alert {
+    -fx-background-color: white;
+}
+
+.alert .content {
+    -fx-font-size: 13px;
+}
+
+.alert .header-panel {
+    -fx-background-color: #f5f5f5;
+}
+
+/* ==================== SCROLLBAR ESTILIZADO ==================== */
+
+.scroll-bar:vertical {
+    -fx-background-color: transparent;
+    -fx-pref-width: 12px;
+}
+
+.scroll-bar:horizontal {
+    -fx-background-color: transparent;
+    -fx-pref-height: 12px;
+}
+
+.scroll-bar .increment-button,
+.scroll-bar .decrement-button {
+    -fx-background-color: transparent;
+    -fx-padding: 0;
+}
+
+.scroll-bar .increment-arrow,
+.scroll-bar .decrement-arrow {
+    -fx-shape: "";
+    -fx-padding: 0;
+}
+
+.scroll-bar .thumb {
+    -fx-background-color: #c0c0c0;
+    -fx-background-radius: 6;
+}
+
+.scroll-bar .thumb:hover {
+    -fx-background-color: #a0a0a0;
+}
+
+.scroll-bar .thumb:pressed {
+    -fx-background-color: #808080;
+}
+
+.scroll-bar .track {
+    -fx-background-color: #f0f0f0;
+    -fx-background-radius: 6;
+}
