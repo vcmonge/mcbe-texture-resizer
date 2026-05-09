@@ -1,40 +1,44 @@
-# Herramienta para redimensionar paquetes de texturas para Minecraft Bedrock.
+# Iron — Texture Resizer for Minecraft Bedrock
 
-## Funcionamiento
+A lightweight JavaFX desktop tool for batch-resizing textures in **Minecraft Bedrock Edition** resource packs. Point it at a resource pack folder, preview every texture on a fast canvas-based grid, and downscale individual or bulk-selected textures with a single click.
 
-1. Se elige la **carpeta raíz** del resource pack.
-2. La aplicación escanea subcarpetas y muestra las texturas en un mosaico organizado por pestañas.
-3. Cada imagen del mosaico tiene un botón **Reducir** en cada entrada para aplicar la reducción con el factor y el algoritmo configurados. Las miniaturas y datos provienen de los archivos reales del disco.
+## How It Works
 
-Las salidas sobrescriben los archivos de imagen en las rutas correspondientes (hacer un respaldo antes de procesar).
+1. **Select** the resource pack's root folder using the **Browse…** button.
+2. The app scans the standard `textures/` subdirectories and displays every texture in a tabbed mosaic (Blocks, Items, Environment, Entity).
+3. **Resize** textures one by one via the per-card **Resize** button, or enable **Selection Mode** to batch-process multiple textures at once.
 
-## Características
+> **⚠ Warning:** Processed images overwrite the originals in place — back up your resource pack before running the tool.
 
-| Aspecto | Detalle |
-|--------|---------|
-| **Formatos** | PNG y TGA (incluye canal alpha) |
-| **Rutas escaneadas** | `textures/blocks`, `textures/items`, `textures/environment`, `textures/entity` |
-| **Texturas relacionadas** | Detecta y procesa junto a la base los sufijos `_mer` y `_normal` cuando existen |
-| **Algoritmo** | Por defecto *Area Resampling* (relación de áreas entre píxeles), pensado para bajar resolución con mejor comportamiento en alpha que el escalado trivial |
-| **TGA** | Los `.tga` se procesan con **RGB y alpha como canales independientes** (comportamiento fijo del proyecto, adecuado a la mayoría de TGA en resource packs) |
-| **Factores de escala** | Dividir tamaño entre 2, 4, 8 o 16 (configurable en la barra superior) |
-| **Selección múltiple** | Modo para elegir varias texturas en la pestaña activa y disparar la reducción en conjunto |
-| **Ordenación** | Por resolución (ascendente/descendente) según el combo “Ordenar por” |
-| **Interfaz** | Vista tipo cuadrícula dibujada con **Canvas** por pestaña para mantener la aplicación fluida con miles de texturas |
+## Features
 
-## Requisitos
+| Feature | Details |
+|---------|---------|
+| **Supported Formats** | PNG and TGA (including alpha channel) |
+| **Scanned Paths** | `textures/blocks`, `textures/items`, `textures/environment`, `textures/entity` |
+| **Related Textures** | Automatically detects and resizes companion `_mer` and `_normal` maps alongside the base texture |
+| **Default Algorithm** | *Area Resampling* (pixel-area relation) — produces cleaner results on semi-transparent edges than naive downscaling |
+| **TGA Handling** | RGB and alpha channels are processed independently (fixed behavior, suited for most resource-pack TGAs) |
+| **Scale Factors** | Divide dimensions by 2, 4, 8, or 16 (selectable in the toolbar) |
+| **Batch Selection** | Toggle Selection Mode to pick multiple textures in the active tab and process them all at once |
+| **Sorting** | Sort the grid by resolution (ascending or descending) |
+| **Performance** | Each tab renders its grid on a single `Canvas` node — the UI stays responsive even with thousands of textures |
 
-- **JDK 8** con **JavaFX** (proyecto NetBeans tipo JavaFX, clase principal declarada como `view.Iron` en la configuración del proyecto).
+## Requirements
 
-## Cómo ejecutar
+- **JDK 8** with **JavaFX** (NetBeans JavaFX project; main class: `view.Iron`).
 
-- Abrir el proyecto en **Apache NetBeans** y ejecuta con **Run** sobre la aplicación JavaFX (por ejemplo **Clean and Build** y luego **Run**).
+## Running
 
-## Estructura del código (resumen)
+1. Open the project in **Apache NetBeans**.
+2. **Clean and Build**, then **Run**.
 
-- `src/view/` — UI (`Iron.java`, `FXMLInicio.fxml`, `CanvasTextureGrid.java`, estilos)
-- `src/controller/` — `FXMLInicioController.java`
-- `src/service/` — Carga y proceso (`TextureService`, `ImageProcessor`, `AreaResampler`)
-- `src/model/` — `TextureInfo`
-- `src/util/` — Constantes, TGA, algoritmos
+## Project Structure
 
+| Path | Contents |
+|------|----------|
+| `src/view/` | UI — `Iron.java`, `FXMLInicio.fxml`, `CanvasTextureGrid.java`, stylesheets |
+| `src/controller/` | `FXMLInicioController.java` |
+| `src/service/` | Texture loading & processing (`TextureService`, `ImageProcessor`, `AreaResampler`) |
+| `src/model/` | `TextureInfo` |
+| `src/util/` | Constants, TGA utilities, algorithm definitions |

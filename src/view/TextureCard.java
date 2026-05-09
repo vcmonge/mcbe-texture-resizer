@@ -87,7 +87,7 @@ public class TextureCard extends VBox {
      */
     public TextureCard(TextureInfo textureInfo) {
         if (textureInfo == null) {
-            throw new IllegalArgumentException("TextureInfo no puede ser null");
+            throw new IllegalArgumentException("TextureInfo cannot be null");
         }
         
         this.textureInfo = textureInfo;
@@ -209,13 +209,13 @@ public class TextureCard extends VBox {
      */
     private String buildInfoTooltip() {
         StringBuilder tooltipText = new StringBuilder();
-        tooltipText.append("Resolución: ").append(textureInfo.getWidth())
+        tooltipText.append("Resolution: ").append(textureInfo.getWidth())
                    .append("x").append(textureInfo.getHeight());
         if (textureInfo.hasMer()) {
-            tooltipText.append("\nTextura MER: ").append(textureInfo.getMerFile().getName());
+            tooltipText.append("\nMER Texture: ").append(textureInfo.getMerFile().getName());
         }
         if (textureInfo.hasNormal()) {
-            tooltipText.append("\nTextura Normal: ").append(textureInfo.getNormalFile().getName());
+            tooltipText.append("\nNormal Texture: ").append(textureInfo.getNormalFile().getName());
         }
         return tooltipText.toString();
     }
@@ -226,14 +226,14 @@ public class TextureCard extends VBox {
      * @return Button configurado
      */
     private Button createProcessButton() {
-        Button button = new Button("Reducir");
+        Button button = new Button("Resize");
         button.setMaxWidth(Double.MAX_VALUE);
         button.getStyleClass().add("texture-card-button");
         
         installLazyTooltip(button, () -> {
             int newWidth = Math.max(1, textureInfo.getWidth() / Constants.DEFAULT_SCALE_FACTOR);
             int newHeight = Math.max(1, textureInfo.getHeight() / Constants.DEFAULT_SCALE_FACTOR);
-            return String.format("Reducir a %dx%d (factor %d)",
+            return String.format("Resize to %dx%d (factor %d)",
                     newWidth, newHeight, Constants.DEFAULT_SCALE_FACTOR);
         });
         
@@ -444,14 +444,14 @@ public class TextureCard extends VBox {
      */
     public void resetButton() {
         processButton.setDisable(false);
-        processButton.setText("Reducir");
+        processButton.setText("Resize");
     }
     
     /**
      * Actualiza el estado visual después de procesar exitosamente.
      */
     public void markAsProcessed() {
-        processButton.setText("Listo");
+        processButton.setText("Done");
         if (!processButton.getStyleClass().contains("texture-card-button-done")) {
             processButton.getStyleClass().add("texture-card-button-done");
         }

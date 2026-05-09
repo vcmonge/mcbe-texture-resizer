@@ -50,7 +50,7 @@ public class Iron extends Application {
             
             // Configurar stage
             stage.setScene(escena);
-            stage.setTitle("Iron - Reductor de Texturas de Videojuegos");
+            stage.setTitle("Iron \u2014 Game Texture Resizer");
             stage.setMinWidth(900);
             stage.setMinHeight(600);
             stage.setWidth(1280);
@@ -67,7 +67,7 @@ public class Iron extends Application {
             stage.show();
             
         } catch (IOException e) {
-            System.err.println("Error al cargar la interfaz: " + e.getMessage());
+            System.err.println("Error loading the interface: " + e.getMessage());
             e.printStackTrace();
         }
     }

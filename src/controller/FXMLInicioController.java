@@ -132,9 +132,9 @@ public class FXMLInicioController implements Initializable {
     
     // ==================== CONSTANTES DE ORDENAMIENTO ====================
     
-    private static final String SORT_DEFAULT = "Sin ordenar";
-    private static final String SORT_RES_ASC = "Resolución (menor a mayor)";
-    private static final String SORT_RES_DESC = "Resolución (mayor a menor)";
+    private static final String SORT_DEFAULT = "Unsorted";
+    private static final String SORT_RES_ASC = "Resolution (low \u2192 high)";
+    private static final String SORT_RES_DESC = "Resolution (high \u2192 low)";
     
     // ==================== INICIALIZACIÓN ====================
     
@@ -154,7 +154,7 @@ public class FXMLInicioController implements Initializable {
         gridEnvironment = createGrid(scrollEnvironment);
         gridEntity = createGrid(scrollEntity);
         
-        updateStatus("Listo - Selecciona una carpeta de resource pack");
+        updateStatus("Ready \u2014 Select a resource pack folder");
     }
     
     /**
@@ -178,7 +178,7 @@ public class FXMLInicioController implements Initializable {
         cmbScaleFactor.valueProperty().addListener((obs, oldVal, newVal) -> {
             if (newVal != null) {
                 createTextureService();
-                updateStatus("Factor de escala cambiado a " + newVal);
+                updateStatus("Scale factor changed to " + newVal);
             }
         });
     }
@@ -190,7 +190,7 @@ public class FXMLInicioController implements Initializable {
         cmbAlgorithm.valueProperty().addListener((obs, oldVal, newVal) -> {
             if (newVal != null) {
                 createTextureService();
-                updateStatus("Algoritmo cambiado a " + newVal.getDisplayName());
+                updateStatus("Algorithm changed to " + newVal.getDisplayName());
             }
         });
     }
@@ -203,7 +203,7 @@ public class FXMLInicioController implements Initializable {
         cmbSortOrder.valueProperty().addListener((obs, oldVal, newVal) -> {
             if (newVal != null) {
                 applySorting();
-                updateStatus("Ordenamiento aplicado: " + newVal);
+                updateStatus("Sort applied: " + newVal);
             }
         });
     }
@@ -232,7 +232,7 @@ public class FXMLInicioController implements Initializable {
     @FXML
     private void handleSelectFolder() {
         DirectoryChooser chooser = new DirectoryChooser();
-        chooser.setTitle("Seleccionar carpeta del Resource Pack");
+        chooser.setTitle("Select Resource Pack Folder");
         
         if (rootDirectory != null && rootDirectory.exists()) {
             chooser.setInitialDirectory(rootDirectory);
@@ -247,18 +247,18 @@ public class FXMLInicioController implements Initializable {
             
             if (textureService.hasValidTextureDirectories(selected)) {
                 btnLoad.setDisable(false);
-                updateStatus("Carpeta válida - Haz clic en 'Cargar Texturas'");
+                updateStatus("Valid folder \u2014 Click 'Load Textures'");
             } else {
                 btnLoad.setDisable(true);
-                updateStatus("Advertencia: No se encontraron carpetas de texturas");
+                updateStatus("Warning: No texture folders found");
                 
-                showWarning("Estructura no encontrada", 
-                        "No se encontraron las carpetas esperadas:\n" +
+                showWarning("Structure Not Found", 
+                        "Expected folders were not found:\n" +
                         "- " + Constants.BLOCKS_PATH + "\n" +
                         "- " + Constants.ITEMS_PATH + "\n" +
                         "- " + Constants.ENVIRONMENT_PATH + "\n" +
                         "- " + Constants.ENTITY_PATH + "\n\n" +
-                        "Verifica que la carpeta seleccionada sea la raíz del resource pack.");
+                        "Verify that the selected folder is the resource pack root.");
             }
         }
     }
@@ -266,7 +266,7 @@ public class FXMLInicioController implements Initializable {
     @FXML
     private void handleLoadTextures() {
         if (rootDirectory == null || !rootDirectory.exists()) {
-            showError("Error", "Selecciona una carpeta válida primero.");
+            showError("Error", "Select a valid folder first.");
             return;
         }
         
@@ -283,19 +283,19 @@ public class FXMLInicioController implements Initializable {
         Task<Void> loadTask = new Task<Void>() {
             @Override
             protected Void call() throws Exception {
-                updateMessage("Cargando texturas de bloques...");
+                updateMessage("Loading block textures...");
                 blockTextures = textureService.loadBlockTextures(rootDirectory, 
                         msg -> Platform.runLater(() -> updateStatus(msg)));
                 
-                updateMessage("Cargando texturas de items...");
+                updateMessage("Loading item textures...");
                 itemTextures = textureService.loadItemTextures(rootDirectory,
                         msg -> Platform.runLater(() -> updateStatus(msg)));
                 
-                updateMessage("Cargando texturas de environment...");
+                updateMessage("Loading environment textures...");
                 environmentTextures = textureService.loadEnvironmentTextures(rootDirectory,
                         msg -> Platform.runLater(() -> updateStatus(msg)));
                 
-                updateMessage("Cargando texturas de entity...");
+                updateMessage("Loading entity textures...");
                 entityTextures = textureService.loadEntityTextures(rootDirectory,
                         msg -> Platform.runLater(() -> updateStatus(msg)));
                 
@@ -322,7 +322,7 @@ public class FXMLInicioController implements Initializable {
                 processedCount = 0;
                 
                 updateCounters();
-                updateStatus(String.format("Carga completada - %d texturas encontradas", totalTextures));
+                updateStatus(String.format("Load complete \u2014 %d textures found", totalTextures));
             }
             
             @Override
@@ -331,8 +331,8 @@ public class FXMLInicioController implements Initializable {
                 progressBar.setVisible(false);
                 
                 Throwable e = getException();
-                updateStatus("Error durante la carga: " + e.getMessage());
-                showError("Error de carga", "Ocurrió un error al cargar las texturas:\n" + e.getMessage());
+                updateStatus("Error during load: " + e.getMessage());
+                showError("Load Error", "An error occurred while loading textures:\n" + e.getMessage());
             }
         };
         
@@ -349,7 +349,7 @@ public class FXMLInicioController implements Initializable {
         selectionModeActive.set(newMode);
         
         if (newMode) {
-            btnSelectionMode.setText("Desactivar Selección");
+            btnSelectionMode.setText("Disable Selection");
             btnSelectionMode.setStyle("-fx-background-color: #ff9800; -fx-text-fill: white;");
             
             btnProcessSelected.setVisible(true);
@@ -360,7 +360,7 @@ public class FXMLInicioController implements Initializable {
             btnDeselectAll.setManaged(true);
             
         } else {
-            btnSelectionMode.setText("Activar Selección");
+            btnSelectionMode.setText("Enable Selection");
             btnSelectionMode.setStyle("");
             
             btnProcessSelected.setVisible(false);
@@ -417,11 +417,11 @@ public class FXMLInicioController implements Initializable {
         Set<TextureInfo> selected = getAllSelectedTextures();
         
         if (selected.isEmpty()) {
-            showWarning("Sin selección", "No hay texturas seleccionadas para procesar.");
+            showWarning("No Selection", "No textures selected for processing.");
             return;
         }
         
-        updateStatus(String.format("Procesando %d texturas seleccionadas...", selected.size()));
+        updateStatus(String.format("Processing %d selected textures...", selected.size()));
         btnProcessSelected.setDisable(true);
         
         for (TextureInfo t : selected) {
@@ -448,7 +448,7 @@ public class FXMLInicioController implements Initializable {
         for (CanvasTextureGrid g : allGrids()) {
             if (g != null) count += g.getSelectedCount();
         }
-        btnProcessSelected.setText(String.format("Procesar Seleccionados (%d)", count));
+        btnProcessSelected.setText(String.format("Process Selected (%d)", count));
         btnProcessSelected.setDisable(count == 0);
     }
     
@@ -546,15 +546,15 @@ public class FXMLInicioController implements Initializable {
                 }
                 updateCounters();
                 updateSelectedCount();
-                updateStatus(String.format("Procesada: %s [%d/%d]", 
+                updateStatus(String.format("Processed: %s [%d/%d]", 
                         textureInfo.getBaseFile().getName(), 
                         processedCount, totalTextures));
             },
             (Exception e) -> {
-                showError("Error de procesamiento", 
-                        "Error al procesar " + textureInfo.getBaseFile().getName() + 
+                showError("Processing Error", 
+                        "Error processing " + textureInfo.getBaseFile().getName() + 
                         ":\n" + e.getMessage());
-                updateStatus("Error procesando: " + textureInfo.getBaseFile().getName());
+                updateStatus("Error processing: " + textureInfo.getBaseFile().getName());
             }
         );
     }

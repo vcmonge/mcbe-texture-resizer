@@ -508,7 +508,7 @@ public class CanvasTextureGrid extends Pane {
         gc.setFont(FONT_BUTTON);
         gc.setTextAlign(TextAlignment.CENTER);
         gc.setTextBaseline(VPos.CENTER);
-        gc.fillText("Reducir", btnX + btnW / 2.0, btnY + BUTTON_H / 2.0);
+        gc.fillText("Resize", btnX + btnW / 2.0, btnY + BUTTON_H / 2.0);
     }
     
     /**
