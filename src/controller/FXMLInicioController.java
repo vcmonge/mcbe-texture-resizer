@@ -31,6 +31,7 @@ import javafx.stage.Stage;
 import model.TextureInfo;
 import service.ImageProcessor;
 import service.TextureService;
+import util.AlphaMode;
 import util.Constants;
 import util.ResizeAlgorithm;
 import view.CanvasTextureGrid;
@@ -63,6 +64,7 @@ public class FXMLInicioController implements Initializable {
     @FXML private Button btnLoad;
     @FXML private ComboBox<Integer> cmbScaleFactor;
     @FXML private ComboBox<ResizeAlgorithm> cmbAlgorithm;
+    @FXML private ComboBox<AlphaMode> cmbAlphaMode;
     @FXML private TabPane tabPane;
     
     // Scroll panes (reciben un CanvasTextureGrid como content)
@@ -142,6 +144,7 @@ public class FXMLInicioController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         initializeScaleFactorCombo();
         initializeAlgorithmCombo();
+        initializeAlphaModeCombo();
         
         initializeSortOrderCombo();
         
@@ -208,6 +211,18 @@ public class FXMLInicioController implements Initializable {
         });
     }
     
+    private void initializeAlphaModeCombo() {
+        cmbAlphaMode.setItems(FXCollections.observableArrayList(AlphaMode.values()));
+        cmbAlphaMode.setValue(Constants.DEFAULT_ALPHA_MODE);
+        
+        cmbAlphaMode.valueProperty().addListener((obs, oldVal, newVal) -> {
+            if (newVal != null) {
+                createTextureService();
+                updateStatus("Alpha mode changed to " + newVal.getDisplayName());
+            }
+        });
+    }
+    
     /**
      * Crea o recrea el servicio de texturas con la configuración actual.
      */
@@ -222,8 +237,11 @@ public class FXMLInicioController implements Initializable {
         ResizeAlgorithm algo = cmbAlgorithm != null && cmbAlgorithm.getValue() != null ?
                 cmbAlgorithm.getValue() : Constants.DEFAULT_ALGORITHM;
         
+        AlphaMode alpha = cmbAlphaMode != null && cmbAlphaMode.getValue() != null ?
+                cmbAlphaMode.getValue() : Constants.DEFAULT_ALPHA_MODE;
+        
         ImageProcessor processor = new ImageProcessor(scaleFactor, algo,
-                Constants.TGA_INDEPENDENT_ALPHA_PROCESSING);
+                Constants.TGA_INDEPENDENT_ALPHA_PROCESSING, alpha);
         textureService = new TextureService(processor);
     }
     
@@ -612,6 +630,7 @@ public class FXMLInicioController implements Initializable {
         btnLoad.setDisable(!enabled);
         cmbScaleFactor.setDisable(!enabled);
         cmbAlgorithm.setDisable(!enabled);
+        cmbAlphaMode.setDisable(!enabled);
         cmbSortOrder.setDisable(!enabled);
         btnSelectionMode.setDisable(!enabled);
     }

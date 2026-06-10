@@ -34,8 +34,8 @@
                 <Label text="Texture Resizer | Minecraft Bedrock" styleClass="app-title"/>
             </HBox>
             
-            <!-- Main controls -->
-            <HBox alignment="CENTER_LEFT" spacing="15" styleClass="toolbar">
+            <!-- Main controls: folder selector -->
+            <HBox alignment="CENTER_LEFT" spacing="12" styleClass="toolbar">
                 <padding>
                     <Insets top="10" right="20" bottom="10" left="20"/>
                 </padding>
@@ -43,24 +43,13 @@
                 <!-- Folder selector -->
                 <Label text="Root folder:"/>
                 <TextField fx:id="txtRootPath" 
-                           prefWidth="350" 
+                           HBox.hgrow="ALWAYS"
                            promptText="Select the resource pack folder..."
                            editable="false"/>
                 <Button fx:id="btnSelectFolder" 
                         text="Browse..." 
                         onAction="#handleSelectFolder"
                         styleClass="btn-primary"/>
-                
-                <!-- Separator -->
-                <Region HBox.hgrow="ALWAYS"/>
-                
-                <!-- Scale factor -->
-                <Label text="Factor:"/>
-                <ComboBox fx:id="cmbScaleFactor" prefWidth="70"/>
-                
-                <!-- Resize algorithm -->
-                <Label text="Algorithm:"/>
-                <ComboBox fx:id="cmbAlgorithm" prefWidth="160"/>
                 
                 <!-- Load button -->
                 <Button fx:id="btnLoad" 
@@ -70,11 +59,26 @@
                         disable="true"/>
             </HBox>
             
-            <!-- Secondary toolbar -->
-            <HBox alignment="CENTER_LEFT" spacing="15" styleClass="toolbar-secondary">
+            <!-- Secondary toolbar: config + selection + sorting -->
+            <HBox alignment="CENTER_LEFT" spacing="12" styleClass="toolbar-secondary">
                 <padding>
                     <Insets top="8" right="20" bottom="8" left="20"/>
                 </padding>
+                
+                <!-- Scale factor -->
+                <Label text="Factor:"/>
+                <ComboBox fx:id="cmbScaleFactor" prefWidth="70"/>
+                
+                <!-- Resize algorithm -->
+                <Label text="Algorithm:"/>
+                <ComboBox fx:id="cmbAlgorithm" prefWidth="180"/>
+                
+                <!-- Alpha mode -->
+                <Label text="Alpha:"/>
+                <ComboBox fx:id="cmbAlphaMode" prefWidth="230"/>
+                
+                <!-- Visual separator -->
+                <Separator orientation="VERTICAL" prefHeight="20"/>
                 
                 <!-- Selection Mode -->
                 <Label text="Selection:"/>

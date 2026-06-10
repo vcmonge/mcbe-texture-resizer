@@ -1,6 +1,7 @@
 package service;
 
 import java.awt.image.BufferedImage;
+import util.AlphaMode;
 
 /**
  * Implementación del algoritmo Area Resampling (Pixel Area Relation) para
@@ -10,8 +11,11 @@ import java.awt.image.BufferedImage;
  * Usa alfa premultiplicado para mezclar correctamente píxeles con diferente
  * nivel de transparencia, evitando halos oscuros en bordes semitransparentes.
  * 
- * Aplica un umbral binario al alfa (≥ 0.5 → opaco, &lt; 0.5 → transparente)
- * para preservar bordes duros en texturas con transparencia binaria.
+ * Soporta dos modos de procesamiento del canal alfa:
+ * - {@link AlphaMode#BINARY}: umbral binario (≥ 0.5 → opaco, &lt; 0.5 → transparente),
+ *   ideal para texturas con transparencia de recorte.
+ * - {@link AlphaMode#CONTINUOUS}: preserva el valor real del alfa, ideal para
+ *   texturas con opacidad parcial (hielo, agua, cristal).
  * 
  * @author vmonge
  */
@@ -23,6 +27,7 @@ public final class AreaResampler {
 
     /**
      * Redimensiona una imagen usando area resampling con alfa premultiplicado.
+     * Usa alfa binario por defecto (comportamiento original).
      *
      * @param source   Imagen fuente
      * @param dstWidth Ancho destino (debe ser &gt; 0)
@@ -30,6 +35,20 @@ public final class AreaResampler {
      * @return Nueva BufferedImage en TYPE_INT_ARGB
      */
     public static BufferedImage resize(BufferedImage source, int dstWidth, int dstHeight) {
+        return resize(source, dstWidth, dstHeight, AlphaMode.BINARY);
+    }
+
+    /**
+     * Redimensiona una imagen usando area resampling con alfa premultiplicado.
+     *
+     * @param source    Imagen fuente
+     * @param dstWidth  Ancho destino (debe ser &gt; 0)
+     * @param dstHeight Alto destino (debe ser &gt; 0)
+     * @param alphaMode Modo de procesamiento del canal alfa
+     * @return Nueva BufferedImage en TYPE_INT_ARGB
+     */
+    public static BufferedImage resize(BufferedImage source, int dstWidth, int dstHeight,
+            AlphaMode alphaMode) {
         if (source == null) {
             throw new IllegalArgumentException("La imagen fuente no puede ser null");
         }
@@ -115,16 +134,25 @@ public final class AreaResampler {
                 } else {
                     double aOut = sumA / sumArea;
 
-                    if (aOut >= 0.5) {
-                        finalA = 255;
+                    if (alphaMode == AlphaMode.CONTINUOUS) {
+                        // Alfa continuo: preservar el valor real
+                        finalA = clamp255(aOut);
                         finalR = clamp255(sumR / sumA);
                         finalG = clamp255(sumG / sumA);
                         finalB = clamp255(sumB / sumA);
                     } else {
-                        finalA = 0;
-                        finalR = 0;
-                        finalG = 0;
-                        finalB = 0;
+                        // Alfa binario: umbral ≥ 0.5 → opaco, < 0.5 → transparente
+                        if (aOut >= 0.5) {
+                            finalA = 255;
+                            finalR = clamp255(sumR / sumA);
+                            finalG = clamp255(sumG / sumA);
+                            finalB = clamp255(sumB / sumA);
+                        } else {
+                            finalA = 0;
+                            finalR = 0;
+                            finalG = 0;
+                            finalB = 0;
+                        }
                     }
                 }
 

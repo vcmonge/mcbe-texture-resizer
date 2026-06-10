@@ -4,6 +4,7 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import javax.imageio.ImageIO;
+import util.AlphaMode;
 import util.Constants;
 import util.ResizeAlgorithm;
 import util.TGAHandler;
@@ -35,6 +36,9 @@ public class ImageProcessor {
     /** Si true, los TGA se procesan con RGB y Alpha como canales independientes */
     private final boolean tgaIndependentAlpha;
     
+    /** Modo de procesamiento del canal alfa (binario o continuo) */
+    private final AlphaMode alphaMode;
+    
     // ==================== CONSTRUCTORES ====================
     
     /**
@@ -65,21 +69,39 @@ public class ImageProcessor {
     
     /**
      * Crea un procesador con configuración completa y control de TGA.
+     * Usa alfa binario por defecto.
      * 
      * @param scaleFactor Factor de división de resolución
      * @param algorithm Algoritmo de redimensionamiento a usar
      * @param tgaIndependentAlpha Si true, los TGA se procesan con canales RGB y Alpha independientes
      */
     public ImageProcessor(int scaleFactor, ResizeAlgorithm algorithm, boolean tgaIndependentAlpha) {
+        this(scaleFactor, algorithm, tgaIndependentAlpha, AlphaMode.BINARY);
+    }
+    
+    /**
+     * Crea un procesador con configuración completa, control de TGA y modo de alfa.
+     * 
+     * @param scaleFactor Factor de división de resolución
+     * @param algorithm Algoritmo de redimensionamiento a usar
+     * @param tgaIndependentAlpha Si true, los TGA se procesan con canales RGB y Alpha independientes
+     * @param alphaMode Modo de procesamiento del canal alfa (binario o continuo)
+     */
+    public ImageProcessor(int scaleFactor, ResizeAlgorithm algorithm, 
+            boolean tgaIndependentAlpha, AlphaMode alphaMode) {
         if (scaleFactor < 1) {
             throw new IllegalArgumentException("El factor de escala debe ser >= 1");
         }
         if (algorithm == null) {
             throw new IllegalArgumentException("El algoritmo no puede ser null");
         }
+        if (alphaMode == null) {
+            throw new IllegalArgumentException("El modo de alfa no puede ser null");
+        }
         this.scaleFactor = scaleFactor;
         this.algorithm = algorithm;
         this.tgaIndependentAlpha = tgaIndependentAlpha;
+        this.alphaMode = alphaMode;
     }
     
     // ==================== MÉTODOS DE PROCESAMIENTO ====================
@@ -108,7 +130,7 @@ public class ImageProcessor {
         
         switch (algorithm) {
             case AREA:
-                return AreaResampler.resize(original, newWidth, newHeight);
+                return AreaResampler.resize(original, newWidth, newHeight, alphaMode);
             default:
                 throw new UnsupportedOperationException(
                         "Algoritmo no implementado: " + algorithm);
@@ -239,6 +261,13 @@ public class ImageProcessor {
      */
     public ResizeAlgorithm getAlgorithm() {
         return algorithm;
+    }
+    
+    /**
+     * @return Modo de procesamiento del canal alfa
+     */
+    public AlphaMode getAlphaMode() {
+        return alphaMode;
     }
     
     /**

@@ -32,6 +32,15 @@ public final class Constants {
      */
     public static final boolean TGA_INDEPENDENT_ALPHA_PROCESSING = true;
     
+    /**
+     * Modo de alfa por defecto para el redimensionamiento de PNG.
+     * {@code true} = alfa binario (opaco/transparente),
+     * {@code false} = alfa continuo (preserva opacidad parcial).
+     * 
+     * @see AlphaMode
+     */
+    public static final AlphaMode DEFAULT_ALPHA_MODE = AlphaMode.BINARY;
+    
     // ==================== RUTAS DE TEXTURAS ====================
     
     /**

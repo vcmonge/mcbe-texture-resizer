@@ -51,9 +51,9 @@ public class Iron extends Application {
             // Configurar stage
             stage.setScene(escena);
             stage.setTitle("Iron \u2014 Game Texture Resizer");
-            stage.setMinWidth(900);
+            stage.setMinWidth(1200);
             stage.setMinHeight(600);
-            stage.setWidth(1280);
+            stage.setWidth(1440);
             stage.setHeight(800);
             
             // Manejar cierre de aplicación

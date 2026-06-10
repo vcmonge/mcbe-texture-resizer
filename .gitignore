@@ -10,6 +10,7 @@
 *.class
 *.log
 hs_err_pid*
+/target/
 
 # JavaFX / Java
 *.jmod
