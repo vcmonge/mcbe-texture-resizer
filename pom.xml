@@ -6,7 +6,7 @@
 
     <groupId>com.vmonge</groupId>
     <artifactId>iron</artifactId>
-    <version>1.0</version>
+    <version>1.1.0</version>
     <packaging>jar</packaging>
 
     <name>Iron - Game Texture Resizer</name>
@@ -53,6 +53,7 @@
     </dependencies>
 
     <build>
+        <finalName>${project.artifactId}-${project.version}-windows</finalName>
         <sourceDirectory>src</sourceDirectory>
         <resources>
             <resource>

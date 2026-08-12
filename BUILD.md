@@ -5,7 +5,7 @@ Windows. It is intended for someone who has just cloned the repository and wants
 to generate the final artifact:
 
 ```text
-target/iron-1.0.jar
+target/iron-1.1.0-windows.jar
 ```
 
 The original NetBeans/Ant project is preserved. The fat JAR is generated with
@@ -20,7 +20,7 @@ You need:
 The final JAR is run with:
 
 ```powershell
-java -jar target\iron-1.0.jar
+java -jar target\iron-1.1.0-windows.jar
 ```
 
 ## 2. Clone the repository
@@ -169,7 +169,7 @@ BUILD SUCCESS
 The final artifact is located at:
 
 ```text
-target/iron-1.0.jar
+target/iron-1.1.0-windows.jar
 ```
 
 ## 6. Run the application
@@ -177,7 +177,7 @@ target/iron-1.0.jar
 Run the JAR from the repository root:
 
 ```powershell
-java -jar target\iron-1.0.jar
+java -jar target\iron-1.1.0-windows.jar
 ```
 
 The Iron window should open without passing `--module-path` and without
@@ -187,7 +187,7 @@ On Java 25 you may see native access warnings because JavaFX is loaded from a
 fat JAR on the classpath. These do not prevent startup. To suppress them:
 
 ```powershell
-java --enable-native-access=ALL-UNNAMED -jar target\iron-1.0.jar
+java --enable-native-access=ALL-UNNAMED -jar target\iron-1.1.0-windows.jar
 ```
 
 ## 7. Verify the generated JAR
@@ -195,13 +195,13 @@ java --enable-native-access=ALL-UNNAMED -jar target\iron-1.0.jar
 Confirm that the file exists:
 
 ```powershell
-Get-ChildItem target\iron-1.0.jar
+Get-ChildItem target\iron-1.1.0-windows.jar
 ```
 
 Confirm that the manifest points to the correct launcher:
 
 ```powershell
-jar xf target\iron-1.0.jar META-INF/MANIFEST.MF
+jar xf target\iron-1.1.0-windows.jar META-INF/MANIFEST.MF
 Get-Content META-INF\MANIFEST.MF
 ```
 
@@ -214,7 +214,7 @@ Main-Class: view.IronLauncher
 Confirm that JavaFX is included inside the fat JAR:
 
 ```powershell
-jar tf target\iron-1.0.jar | Select-String "javafx/application/Application.class|javafx/fxml/FXMLLoader.class|javafx/embed/swing/SwingFXUtils.class"
+jar tf target\iron-1.1.0-windows.jar | Select-String "javafx/application/Application.class|javafx/fxml/FXMLLoader.class|javafx/embed/swing/SwingFXUtils.class"
 ```
 
 The output should include those classes. This confirms that the JAR includes

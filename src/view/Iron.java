@@ -22,7 +22,7 @@ import controller.FXMLInicioController;
  * - Interfaz organizada en pestañas por tipo de textura
  * 
  * @author vmonge
- * @version 1.0
+ * @version 1.1.0
  */
 public class Iron extends Application {
     

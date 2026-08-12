@@ -5,7 +5,7 @@ A lightweight JavaFX desktop tool for batch-resizing textures in **Minecraft Bed
 ## Download
 
 A pre-built executable JAR for Windows is available on the
-[Releases](https://github.com/vcmonge/mcbe-texture-resizer/releases/tag/v1.0)
+[Releases](https://github.com/vcmonge/mcbe-texture-resizer/releases/latest)
 page. It only requires **Java 25** — JavaFX is already bundled inside.
 
 ## How It Works
@@ -46,7 +46,7 @@ single Windows fat JAR:
 
 ```powershell
 mvn clean package
-java -jar target/iron-1.0.jar
+java -jar target/iron-1.1.0-windows.jar
 ```
 
 The packaged entry point is `view.IronLauncher`, which delegates to the JavaFX
