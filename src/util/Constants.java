@@ -66,14 +66,30 @@ public final class Constants {
     // ==================== SUFIJOS DE ARCHIVOS ====================
     
     /**
-     * Sufijo para mapas de metallic/emissive/roughness (MER).
+     * Sufijo canónico para mapas de metallic/emissive/roughness (MER).
+     *
+     * @deprecated Usar {@link #MER_SUFFIXES} para contemplar todas las variantes.
      */
+    @Deprecated
     public static final String MER_SUFFIX = "_mer";
+
+    /**
+     * Sufijos soportados para mapas de metallic/emissive/roughness (MER).
+     */
+    public static final String[] MER_SUFFIXES = {MER_SUFFIX, "_mers"};
     
     /**
-     * Sufijo para mapas de normales.
+     * Sufijo canónico para mapas de normales.
+     *
+     * @deprecated Usar {@link #NORMAL_SUFFIXES} para contemplar todas las variantes.
      */
+    @Deprecated
     public static final String NORMAL_SUFFIX = "_normal";
+
+    /**
+     * Sufijos soportados para mapas de normales.
+     */
+    public static final String[] NORMAL_SUFFIXES = {NORMAL_SUFFIX, "_n"};
     
     // ==================== EXTENSIONES SOPORTADAS ====================
     

@@ -1,5 +1,6 @@
 package view;
 
+import java.io.File;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 import javafx.beans.property.BooleanProperty;
@@ -211,11 +212,11 @@ public class TextureCard extends VBox {
         StringBuilder tooltipText = new StringBuilder();
         tooltipText.append("Resolution: ").append(textureInfo.getWidth())
                    .append("x").append(textureInfo.getHeight());
-        if (textureInfo.hasMer()) {
-            tooltipText.append("\nMER Texture: ").append(textureInfo.getMerFile().getName());
+        for (File merFile : textureInfo.getMerFiles()) {
+            tooltipText.append("\nMER Texture: ").append(merFile.getName());
         }
-        if (textureInfo.hasNormal()) {
-            tooltipText.append("\nNormal Texture: ").append(textureInfo.getNormalFile().getName());
+        for (File normalFile : textureInfo.getNormalFiles()) {
+            tooltipText.append("\nNormal Texture: ").append(normalFile.getName());
         }
         return tooltipText.toString();
     }

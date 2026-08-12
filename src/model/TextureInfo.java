@@ -1,6 +1,8 @@
 package model;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleStringProperty;
@@ -9,7 +11,8 @@ import javafx.scene.image.Image;
 
 /**
  * Modelo que representa una textura y su información asociada.
- * Incluye referencias a texturas adicionales (_mer, _normal) si existen.
+ * Incluye referencias a texturas MER (_mer, _mers) y de normales
+ * (_normal, _n) si existen.
  * 
  * Implementa propiedades observables de JavaFX para binding con la UI.
  * 
@@ -22,11 +25,11 @@ public class TextureInfo {
     /** Archivo de la textura base */
     private final File baseFile;
     
-    /** Archivo de la textura MER (metallic/emissive/roughness), puede ser null */
-    private File merFile;
+    /** Archivos de textura MER (metallic/emissive/roughness) asociados */
+    private final List<File> merFiles;
     
-    /** Archivo de la textura de normales, puede ser null */
-    private File normalFile;
+    /** Archivos de textura de normales asociados */
+    private final List<File> normalFiles;
     
     // ==================== PROPIEDADES DE IMAGEN ====================
     
@@ -71,8 +74,8 @@ public class TextureInfo {
         this.baseFile = baseFile;
         this.width = width;
         this.height = height;
-        this.merFile = null;
-        this.normalFile = null;
+        this.merFiles = new ArrayList<>();
+        this.normalFiles = new ArrayList<>();
         this.thumbnailImage = null;
         
         // Inicializar propiedades observables
@@ -93,10 +96,10 @@ public class TextureInfo {
         StringBuilder sb = new StringBuilder();
         sb.append(width).append("x").append(height);
         
-        if (merFile != null) {
+        if (hasMer()) {
             sb.append(" [M]");
         }
-        if (normalFile != null) {
+        if (hasNormal()) {
             sb.append(" [N]");
         }
         
@@ -104,7 +107,7 @@ public class TextureInfo {
     }
     
     /**
-     * Actualiza el texto de resolución (llamar después de cambiar merFile o normalFile).
+     * Actualiza el texto de resolución después de cambiar los archivos asociados.
      */
     public void updateResolutionText() {
         resolutionText.set(buildResolutionText());
@@ -138,51 +141,55 @@ public class TextureInfo {
     }
     
     /**
-     * @return Archivo de la textura MER o null si no existe
+     * @return Lista inmutable de archivos de textura MER asociados
      */
-    public File getMerFile() {
-        return merFile;
+    public List<File> getMerFiles() {
+        return List.copyOf(merFiles);
     }
     
     /**
-     * Establece el archivo de textura MER.
+     * Agrega un archivo de textura MER si aún no está asociado.
      * 
-     * @param merFile Archivo MER o null
+     * @param merFile Archivo MER; los valores null se ignoran
      */
-    public void setMerFile(File merFile) {
-        this.merFile = merFile;
-        updateResolutionText();
+    public void addMerFile(File merFile) {
+        if (merFile != null && !merFiles.contains(merFile)) {
+            merFiles.add(merFile);
+            updateResolutionText();
+        }
     }
     
     /**
      * @return true si tiene textura MER asociada
      */
     public boolean hasMer() {
-        return merFile != null;
+        return !merFiles.isEmpty();
     }
     
     /**
-     * @return Archivo de la textura de normales o null si no existe
+     * @return Lista inmutable de archivos de textura de normales asociados
      */
-    public File getNormalFile() {
-        return normalFile;
+    public List<File> getNormalFiles() {
+        return List.copyOf(normalFiles);
     }
     
     /**
-     * Establece el archivo de textura de normales.
+     * Agrega un archivo de textura de normales si aún no está asociado.
      * 
-     * @param normalFile Archivo de normales o null
+     * @param normalFile Archivo de normales; los valores null se ignoran
      */
-    public void setNormalFile(File normalFile) {
-        this.normalFile = normalFile;
-        updateResolutionText();
+    public void addNormalFile(File normalFile) {
+        if (normalFile != null && !normalFiles.contains(normalFile)) {
+            normalFiles.add(normalFile);
+            updateResolutionText();
+        }
     }
     
     /**
      * @return true si tiene textura de normales asociada
      */
     public boolean hasNormal() {
-        return normalFile != null;
+        return !normalFiles.isEmpty();
     }
     
     /**
@@ -295,8 +302,8 @@ public class TextureInfo {
     
     @Override
     public String toString() {
-        return String.format("TextureInfo[%s, %dx%d, MER=%b, Normal=%b]",
-                baseFile.getName(), width, height, hasMer(), hasNormal());
+        return String.format("TextureInfo[%s, %dx%d, MER=%d, Normal=%d]",
+                baseFile.getName(), width, height, merFiles.size(), normalFiles.size());
     }
     
     @Override

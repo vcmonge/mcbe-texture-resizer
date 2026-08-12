@@ -17,7 +17,7 @@ import controller.FXMLInicioController;
  * Características:
  * - Carga texturas desde carpetas textures/blocks y textures/items
  * - Soporta formatos PNG y TGA (con canal alpha)
- * - Detecta texturas asociadas (_mer, _normal)
+ * - Detecta texturas asociadas MER (_mer, _mers) y normales (_normal, _n)
  * - Usa algoritmo nearest neighbor para preservar pixel art
  * - Interfaz organizada en pestañas por tipo de textura
  * 

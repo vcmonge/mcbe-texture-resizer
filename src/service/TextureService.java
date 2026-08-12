@@ -29,7 +29,7 @@ import util.TGAHandler;
  * Responsabilidades:
  * - Escanear directorios de texturas
  * - Cargar información de cada textura
- * - Detectar texturas asociadas (_mer, _normal)
+ * - Detectar texturas asociadas MER (_mer, _mers) y normales (_normal, _n)
  * - Generar miniaturas para preview
  * 
  * Principio de Responsabilidad Única: Solo gestiona la carga de texturas.
@@ -133,7 +133,7 @@ public class TextureService {
     
     /**
      * Carga texturas de un directorio específico.
-     * Filtra automáticamente las texturas base (sin sufijos _mer o _normal).
+     * Filtra automáticamente las texturas base (sin sufijos asociados MER o normal).
      * 
      * @param directory Directorio a escanear
      * @param progressCallback Callback para reportar progreso
@@ -158,7 +158,7 @@ public class TextureService {
         // Crear mapa para búsqueda rápida de archivos asociados
         Map<String, File> fileMap = buildFileMap(allImageFiles);
         
-        // Filtrar solo texturas base (sin sufijos _mer o _normal)
+        // Filtrar solo texturas base (sin sufijos asociados MER o normal)
         List<File> baseFiles = filterBaseTextures(allImageFiles);
         reportProgress(progressCallback, "Texturas base: " + baseFiles.size());
         
@@ -243,7 +243,7 @@ public class TextureService {
     
     /**
      * Filtra los archivos para obtener solo las texturas base.
-     * Excluye archivos con sufijos _mer y _normal.
+     * Excluye archivos con cualquiera de los sufijos asociados MER o normal.
      * 
      * @param files Lista completa de archivos
      * @return Lista de texturas base
@@ -253,14 +253,32 @@ public class TextureService {
         
         for (File file : files) {
             String baseName = getBaseName(file);
-            // Excluir si termina en _mer o _normal
-            if (!baseName.endsWith(Constants.MER_SUFFIX) && 
-                !baseName.endsWith(Constants.NORMAL_SUFFIX)) {
+            if (!isAssociatedSuffix(baseName)) {
                 baseTextures.add(file);
             }
         }
         
         return baseTextures;
+    }
+
+    /**
+     * Indica si un nombre sin extensión corresponde a una textura asociada.
+     *
+     * @param baseName Nombre del archivo sin extensión
+     * @return true si termina en un sufijo MER o normal soportado
+     */
+    private boolean isAssociatedSuffix(String baseName) {
+        for (String suffix : Constants.MER_SUFFIXES) {
+            if (baseName.endsWith(suffix)) {
+                return true;
+            }
+        }
+        for (String suffix : Constants.NORMAL_SUFFIXES) {
+            if (baseName.endsWith(suffix)) {
+                return true;
+            }
+        }
+        return false;
     }
     
     /**
@@ -424,7 +442,7 @@ public class TextureService {
     }
     
     /**
-     * Busca y asocia texturas _mer y _normal.
+     * Busca y asocia todas las variantes MER y de normales soportadas.
      * 
      * @param info TextureInfo a actualizar
      * @param baseKey Clave base del archivo
@@ -433,23 +451,17 @@ public class TextureService {
     private void findAssociatedTextures(TextureInfo info, String baseKey, 
             Map<String, File> fileMap) {
         
-        // Buscar textura MER
-        String merKey = baseKey + Constants.MER_SUFFIX;
-        for (String ext : supportedExtensions) {
-            File merFile = fileMap.get(merKey);
+        for (String suffix : Constants.MER_SUFFIXES) {
+            File merFile = fileMap.get(baseKey + suffix);
             if (merFile != null) {
-                info.setMerFile(merFile);
-                break;
+                info.addMerFile(merFile);
             }
         }
         
-        // Buscar textura Normal
-        String normalKey = baseKey + Constants.NORMAL_SUFFIX;
-        for (String ext : supportedExtensions) {
-            File normalFile = fileMap.get(normalKey);
+        for (String suffix : Constants.NORMAL_SUFFIXES) {
+            File normalFile = fileMap.get(baseKey + suffix);
             if (normalFile != null) {
-                info.setNormalFile(normalFile);
-                break;
+                info.addNormalFile(normalFile);
             }
         }
     }
@@ -544,14 +556,14 @@ public class TextureService {
         // Procesar archivo base
         imageProcessor.processFile(textureInfo.getBaseFile());
         
-        // Procesar MER si existe
-        if (textureInfo.hasMer()) {
-            imageProcessor.processFile(textureInfo.getMerFile());
+        // Procesar todas las variantes MER asociadas
+        for (File merFile : textureInfo.getMerFiles()) {
+            imageProcessor.processFile(merFile);
         }
         
-        // Procesar Normal si existe
-        if (textureInfo.hasNormal()) {
-            imageProcessor.processFile(textureInfo.getNormalFile());
+        // Procesar todas las variantes de normales asociadas
+        for (File normalFile : textureInfo.getNormalFiles()) {
+            imageProcessor.processFile(normalFile);
         }
         
         // Marcar como procesada
