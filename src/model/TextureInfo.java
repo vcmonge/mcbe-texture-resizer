@@ -2,6 +2,7 @@ package model;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
@@ -144,7 +145,7 @@ public class TextureInfo {
      * @return Lista inmutable de archivos de textura MER asociados
      */
     public List<File> getMerFiles() {
-        return List.copyOf(merFiles);
+        return Collections.unmodifiableList(new ArrayList<>(merFiles));
     }
     
     /**
@@ -170,7 +171,7 @@ public class TextureInfo {
      * @return Lista inmutable de archivos de textura de normales asociados
      */
     public List<File> getNormalFiles() {
-        return List.copyOf(normalFiles);
+        return Collections.unmodifiableList(new ArrayList<>(normalFiles));
     }
     
     /**

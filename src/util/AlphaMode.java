@@ -20,7 +20,7 @@ public enum AlphaMode {
      * Alfa binario: cada píxel resultante es 100 % opaco o 100 % transparente.
      * Comportamiento original del algoritmo.
      */
-    BINARY("Binary (opaque/transparent)"),
+    BINARY("Binary (Default Mode)"),
     
     /**
      * Alfa continuo: preserva los valores intermedios de transparencia.

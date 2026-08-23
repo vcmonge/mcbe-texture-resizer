@@ -41,6 +41,7 @@ public class Iron extends Application {
             // Cargar FXML
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/FXMLInicio.fxml"));
             Parent vista = loader.load();
+            DesignTokens.install(vista);
             
             // Obtener referencia al controlador
             controller = loader.getController();

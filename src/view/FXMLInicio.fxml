@@ -37,7 +37,7 @@
             <!-- Main controls: folder selector -->
             <HBox alignment="CENTER_LEFT" spacing="12" styleClass="toolbar">
                 <padding>
-                    <Insets top="10" right="20" bottom="10" left="20"/>
+                    <Insets top="12" right="24" bottom="12" left="24"/>
                 </padding>
                 
                 <!-- Folder selector -->
@@ -49,20 +49,20 @@
                 <Button fx:id="btnSelectFolder" 
                         text="Browse..." 
                         onAction="#handleSelectFolder"
-                        styleClass="btn-primary"/>
+                        styleClass="btn-outline"/>
                 
                 <!-- Load button -->
                 <Button fx:id="btnLoad" 
                         text="Load Textures" 
                         onAction="#handleLoadTextures"
-                        styleClass="btn-success"
+                        styleClass="btn-primary"
                         disable="true"/>
             </HBox>
             
             <!-- Secondary toolbar: config + selection + sorting -->
             <HBox alignment="CENTER_LEFT" spacing="12" styleClass="toolbar-secondary">
                 <padding>
-                    <Insets top="8" right="20" bottom="8" left="20"/>
+                    <Insets top="10" right="24" bottom="10" left="24"/>
                 </padding>
                 
                 <!-- Scale factor -->
@@ -87,28 +87,6 @@
                               onAction="#handleToggleSelectionMode"
                               styleClass="btn-toggle"/>
                 
-                <Button fx:id="btnProcessSelected" 
-                        text="Process Selected (0)" 
-                        onAction="#handleProcessSelected"
-                        styleClass="btn-warning"
-                        disable="true"
-                        visible="false"
-                        managed="false"/>
-                
-                <Button fx:id="btnSelectAll" 
-                        text="Select All" 
-                        onAction="#handleSelectAll"
-                        styleClass="btn-secondary"
-                        visible="false"
-                        managed="false"/>
-                
-                <Button fx:id="btnDeselectAll" 
-                        text="Deselect All" 
-                        onAction="#handleDeselectAll"
-                        styleClass="btn-secondary"
-                        visible="false"
-                        managed="false"/>
-                
                 <!-- Separator -->
                 <Region HBox.hgrow="ALWAYS"/>
                 
@@ -116,6 +94,36 @@
                 <Label text="Sort by:"/>
                 <ComboBox fx:id="cmbSortOrder" prefWidth="180"/>
                 
+            </HBox>
+
+            <!-- Contextual actions appear only while multi-selection is active. -->
+            <HBox fx:id="selectionToolbar"
+                  alignment="CENTER_LEFT"
+                  spacing="12"
+                  styleClass="selection-toolbar"
+                  visible="false"
+                  managed="false">
+                <padding>
+                    <Insets top="8" right="24" bottom="8" left="24"/>
+                </padding>
+
+                <Label text="Selection actions"/>
+
+                <Button fx:id="btnProcessSelected"
+                        text="Process Selected (0)"
+                        onAction="#handleProcessSelected"
+                        styleClass="btn-primary"
+                        disable="true"/>
+
+                <Button fx:id="btnSelectAll"
+                        text="Select All"
+                        onAction="#handleSelectAll"
+                        styleClass="btn-secondary"/>
+
+                <Button fx:id="btnDeselectAll"
+                        text="Deselect All"
+                        onAction="#handleDeselectAll"
+                        styleClass="btn-secondary"/>
             </HBox>
         </VBox>
     </top>
@@ -161,7 +169,7 @@
     <bottom>
         <HBox styleClass="status-bar" spacing="20">
             <padding>
-                <Insets top="8" right="20" bottom="8" left="20"/>
+                <Insets top="10" right="24" bottom="10" left="24"/>
             </padding>
             
             <!-- Load info -->

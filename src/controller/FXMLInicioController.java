@@ -26,6 +26,7 @@ import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TabPane;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleButton;
+import javafx.scene.layout.HBox;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.Stage;
 import model.TextureInfo;
@@ -35,6 +36,7 @@ import util.AlphaMode;
 import util.Constants;
 import util.ResizeAlgorithm;
 import view.CanvasTextureGrid;
+import view.DesignTokens;
 
 /**
  * Controlador principal de la aplicación Iron.
@@ -75,6 +77,7 @@ public class FXMLInicioController implements Initializable {
     
     // Controles de modo selección
     @FXML private ToggleButton btnSelectionMode;
+    @FXML private HBox selectionToolbar;
     @FXML private Button btnProcessSelected;
     @FXML private Button btnSelectAll;
     @FXML private Button btnDeselectAll;
@@ -368,25 +371,13 @@ public class FXMLInicioController implements Initializable {
         
         if (newMode) {
             btnSelectionMode.setText("Disable Selection");
-            btnSelectionMode.setStyle("-fx-background-color: #ff9800; -fx-text-fill: white;");
-            
-            btnProcessSelected.setVisible(true);
-            btnProcessSelected.setManaged(true);
-            btnSelectAll.setVisible(true);
-            btnSelectAll.setManaged(true);
-            btnDeselectAll.setVisible(true);
-            btnDeselectAll.setManaged(true);
+            selectionToolbar.setVisible(true);
+            selectionToolbar.setManaged(true);
             
         } else {
             btnSelectionMode.setText("Enable Selection");
-            btnSelectionMode.setStyle("");
-            
-            btnProcessSelected.setVisible(false);
-            btnProcessSelected.setManaged(false);
-            btnSelectAll.setVisible(false);
-            btnSelectAll.setManaged(false);
-            btnDeselectAll.setVisible(false);
-            btnDeselectAll.setManaged(false);
+            selectionToolbar.setVisible(false);
+            selectionToolbar.setManaged(false);
             
             // Los grids ya escuchan selectionModeActive y vacían su selección.
             updateSelectedCount();
@@ -639,6 +630,7 @@ public class FXMLInicioController implements Initializable {
     
     private void showError(String title, String message) {
         Alert alert = new Alert(Alert.AlertType.ERROR);
+        styleAlert(alert);
         alert.setTitle(title);
         alert.setHeaderText(null);
         alert.setContentText(message);
@@ -647,6 +639,7 @@ public class FXMLInicioController implements Initializable {
     
     private void showWarning(String title, String message) {
         Alert alert = new Alert(Alert.AlertType.WARNING);
+        styleAlert(alert);
         alert.setTitle(title);
         alert.setHeaderText(null);
         alert.setContentText(message);
@@ -655,10 +648,21 @@ public class FXMLInicioController implements Initializable {
     
     private void showInfo(String title, String message) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        styleAlert(alert);
         alert.setTitle(title);
         alert.setHeaderText(null);
         alert.setContentText(message);
         alert.showAndWait();
+    }
+
+    /** Applies the application theme to the separate Scene used by dialogs. */
+    private void styleAlert(Alert alert) {
+        DesignTokens.install(alert.getDialogPane());
+        alert.getDialogPane().getStyleClass().add("iron-dialog");
+        URL stylesheet = getClass().getResource("/view/fxmlinicio.css");
+        if (stylesheet != null) {
+            alert.getDialogPane().getStylesheets().add(stylesheet.toExternalForm());
+        }
     }
     
     // ==================== LIMPIEZA ====================

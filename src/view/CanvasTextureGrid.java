@@ -13,10 +13,13 @@ import javafx.geometry.VPos;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.effect.BlurType;
+import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
 import javafx.scene.text.TextAlignment;
 import model.TextureInfo;
 
@@ -44,53 +47,69 @@ public class CanvasTextureGrid extends Pane {
     // ==================== CONSTANTES DE LAYOUT ====================
     
     /** Ancho de cada card. */
-    private static final double CARD_W = 150;
+    private static final double CARD_W = 156;
     
     /** Alto de cada card. */
-    private static final double CARD_H = 180;
+    private static final double CARD_H = 196;
     
     /** Espacio horizontal entre cards. */
-    private static final double H_GAP = 10;
+    private static final double H_GAP = 12;
     
     /** Espacio vertical entre cards. */
-    private static final double V_GAP = 10;
+    private static final double V_GAP = 12;
     
     /** Padding alrededor del grid. */
-    private static final double PADDING = 15;
+    private static final double PADDING = 16;
     
     /** Tamaño visible de la miniatura dentro de la card. */
-    private static final double THUMB_SIZE = 100;
+    private static final double THUMB_SIZE = 104;
     
     /** Alto del "botón" Reducir dentro de la card. */
-    private static final double BUTTON_H = 26;
+    private static final double BUTTON_H = 32;
     
     /** Margen interno entre los elementos de la card. */
-    private static final double CARD_PAD = 8;
+    private static final double CARD_PAD = 10;
+
+    /** Editorial card radius. */
+    private static final double CARD_RADIUS = 16;
+
+    /** Circular selection indicator size. */
+    private static final double SELECTION_INDICATOR_SIZE = 20;
     
     // ==================== COLORES ====================
     
-    private static final Color BG_NORMAL = Color.WHITE;
-    private static final Color BG_HOVER = Color.web("#f8f8f8");
-    private static final Color BG_SELECTED = Color.web("#e8f5e9");
-    private static final Color BG_PROCESSED = Color.web("#f0f0f0");
-    private static final Color BORDER_NORMAL = Color.web("#dddddd");
-    private static final Color BORDER_HOVER = Color.web("#4CAF50");
-    private static final Color BORDER_SELECTED = Color.web("#4CAF50");
-    private static final Color TEXT_NAME = Color.web("#333333");
-    private static final Color TEXT_INFO = Color.web("#666666");
-    private static final Color BUTTON_BG = Color.web("#4CAF50");
-    private static final Color BUTTON_BG_HOVER = Color.web("#45a049");
-    private static final Color BUTTON_TEXT = Color.WHITE;
-    private static final Color PLACEHOLDER_BG = Color.web("#eeeeee");
-    private static final Color PLACEHOLDER_BORDER = Color.web("#cccccc");
-    private static final Color PLACEHOLDER_TEXT = Color.web("#999999");
+    private static final Color BG_NORMAL = DesignTokens.SURFACE_CARD;
+    private static final Color BG_HOVER = DesignTokens.SURFACE_CARD;
+    private static final Color BG_SELECTED = DesignTokens.SURFACE_STRONG;
+    private static final Color BORDER_NORMAL = DesignTokens.HAIRLINE;
+    private static final Color BORDER_HOVER = DesignTokens.HAIRLINE_STRONG;
+    private static final Color BORDER_SELECTED = DesignTokens.INK;
+    private static final Color TEXT_NAME = DesignTokens.INK;
+    private static final Color TEXT_INFO = DesignTokens.MUTED;
+    private static final Color BUTTON_BG = DesignTokens.SURFACE_CARD;
+    private static final Color BUTTON_BG_HOVER = DesignTokens.PRIMARY;
+    private static final Color BUTTON_BORDER = DesignTokens.HAIRLINE_STRONG;
+    private static final Color BUTTON_TEXT = DesignTokens.INK;
+    private static final Color BUTTON_TEXT_HOVER = DesignTokens.ON_PRIMARY;
+    private static final Color PLACEHOLDER_BG = DesignTokens.SURFACE_STRONG;
+    private static final Color PLACEHOLDER_BORDER = DesignTokens.HAIRLINE;
+    private static final Color PLACEHOLDER_TEXT = DesignTokens.MUTED_SOFT;
+
+    private static final DropShadow CARD_HOVER_SHADOW = new DropShadow(
+            BlurType.GAUSSIAN, DesignTokens.SHADOW_SOFT, 16, 0, 0, 4);
     
     // ==================== FUENTES ====================
     
-    private static final Font FONT_NAME = Font.font("System", 11);
-    private static final Font FONT_INFO = Font.font("System", 10);
-    private static final Font FONT_BUTTON = Font.font("System", 11);
-    private static final Font FONT_PLACEHOLDER = Font.font("System", 24);
+    private static final Font FONT_NAME = Font.font(
+            DesignTokens.BODY_FONT, FontWeight.MEDIUM, 12);
+    private static final Font FONT_INFO = Font.font(
+            DesignTokens.BODY_FONT, FontWeight.NORMAL, 11);
+    private static final Font FONT_BUTTON = Font.font(
+            DesignTokens.BODY_FONT, FontWeight.MEDIUM, 12);
+    private static final Font FONT_SELECTION = Font.font(
+            DesignTokens.BODY_FONT, FontWeight.BOLD, 12);
+    private static final Font FONT_PLACEHOLDER = Font.font(
+            DesignTokens.DISPLAY_FONT, FontWeight.NORMAL, 24);
     
     // ==================== ESTADO ====================
     
@@ -133,6 +152,7 @@ public class CanvasTextureGrid extends Pane {
     // ==================== CONSTRUCTOR ====================
     
     public CanvasTextureGrid() {
+        getStyleClass().add("texture-flow");
         getChildren().add(canvas);
         setMinHeight(0);
         
@@ -184,6 +204,8 @@ public class CanvasTextureGrid extends Pane {
         prop.addListener((obs, o, n) -> {
             if (!n) {
                 clearSelection();
+            } else {
+                requestRepaint();
             }
         });
     }
@@ -437,8 +459,13 @@ public class CanvasTextureGrid extends Pane {
         if (isSelected) bg = BG_SELECTED;
         else if (isHover) bg = BG_HOVER;
         else bg = BG_NORMAL;
+        gc.save();
+        if (isHover) {
+            gc.setEffect(CARD_HOVER_SHADOW);
+        }
         gc.setFill(bg);
-        gc.fillRoundRect(x, y, CARD_W, CARD_H, 8, 8);
+        gc.fillRoundRect(x, y, CARD_W, CARD_H, CARD_RADIUS, CARD_RADIUS);
+        gc.restore();
         
         // Borde
         Color border;
@@ -455,7 +482,8 @@ public class CanvasTextureGrid extends Pane {
         }
         gc.setStroke(border);
         gc.setLineWidth(borderW);
-        gc.strokeRoundRect(x + 0.5, y + 0.5, CARD_W - 1, CARD_H - 1, 8, 8);
+        gc.strokeRoundRect(x + 0.5, y + 0.5, CARD_W - 1, CARD_H - 1,
+                CARD_RADIUS, CARD_RADIUS);
         
         // Miniatura centrada
         double thumbX = x + (CARD_W - THUMB_SIZE) / 2.0;
@@ -484,6 +512,10 @@ public class CanvasTextureGrid extends Pane {
             gc.setTextBaseline(VPos.CENTER);
             gc.fillText("?", thumbX + THUMB_SIZE / 2.0, thumbY + THUMB_SIZE / 2.0);
         }
+
+        if (selectionModeActive.get()) {
+            drawSelectionIndicator(gc, isSelected, x, y);
+        }
         
         // Nombre (truncado)
         gc.setFill(TEXT_NAME);
@@ -503,12 +535,40 @@ public class CanvasTextureGrid extends Pane {
         double btnY = y + CARD_H - CARD_PAD - BUTTON_H;
         double btnW = CARD_W - 2 * CARD_PAD;
         gc.setFill(isButtonHover ? BUTTON_BG_HOVER : BUTTON_BG);
-        gc.fillRoundRect(btnX, btnY, btnW, BUTTON_H, 4, 4);
-        gc.setFill(BUTTON_TEXT);
+        gc.fillRoundRect(btnX, btnY, btnW, BUTTON_H, BUTTON_H, BUTTON_H);
+        gc.setStroke(isButtonHover ? BUTTON_BG_HOVER : BUTTON_BORDER);
+        gc.setLineWidth(1);
+        gc.strokeRoundRect(btnX + 0.5, btnY + 0.5, btnW - 1, BUTTON_H - 1,
+                BUTTON_H, BUTTON_H);
+        gc.setFill(isButtonHover ? BUTTON_TEXT_HOVER : BUTTON_TEXT);
         gc.setFont(FONT_BUTTON);
         gc.setTextAlign(TextAlignment.CENTER);
         gc.setTextBaseline(VPos.CENTER);
         gc.fillText("Resize", btnX + btnW / 2.0, btnY + BUTTON_H / 2.0);
+    }
+
+    /** Draws an accessible selection affordance without adding scene nodes. */
+    private void drawSelectionIndicator(GraphicsContext gc, boolean isSelected,
+            double cardX, double cardY) {
+        double indicatorX = cardX + CARD_W - CARD_PAD - SELECTION_INDICATOR_SIZE;
+        double indicatorY = cardY + CARD_PAD;
+
+        gc.setFill(isSelected ? DesignTokens.INK : DesignTokens.SURFACE_CARD);
+        gc.fillOval(indicatorX, indicatorY,
+                SELECTION_INDICATOR_SIZE, SELECTION_INDICATOR_SIZE);
+        gc.setStroke(isSelected ? DesignTokens.INK : DesignTokens.HAIRLINE_STRONG);
+        gc.setLineWidth(1);
+        gc.strokeOval(indicatorX + 0.5, indicatorY + 0.5,
+                SELECTION_INDICATOR_SIZE - 1, SELECTION_INDICATOR_SIZE - 1);
+
+        if (isSelected) {
+            gc.setFill(DesignTokens.ON_PRIMARY);
+            gc.setFont(FONT_SELECTION);
+            gc.setTextAlign(TextAlignment.CENTER);
+            gc.setTextBaseline(VPos.CENTER);
+            gc.fillText("\u2713", indicatorX + SELECTION_INDICATOR_SIZE / 2.0,
+                    indicatorY + SELECTION_INDICATOR_SIZE / 2.0);
+        }
     }
     
     /**
