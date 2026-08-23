@@ -9,7 +9,7 @@ import javafx.stage.Stage;
 import controller.FXMLInicioController;
 
 /**
- * Clase principal de la aplicación Iron - Reductor de Texturas.
+ * Clase principal de la aplicación Bedrock Texture Resizer.
  * 
  * Esta aplicación permite reducir la resolución de texturas de resource packs
  * de videojuegos de manera manual, textura por textura.
@@ -22,7 +22,7 @@ import controller.FXMLInicioController;
  * - Interfaz organizada en pestañas por tipo de textura
  * 
  * @author vmonge
- * @version 1.1.0
+ * @version 1.2.0
  */
 public class Iron extends Application {
     
@@ -51,7 +51,7 @@ public class Iron extends Application {
             
             // Configurar stage
             stage.setScene(escena);
-            stage.setTitle("Iron \u2014 Game Texture Resizer");
+            stage.setTitle("Bedrock Texture Resizer");
             stage.setMinWidth(1200);
             stage.setMinHeight(600);
             stage.setWidth(1440);

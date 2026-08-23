@@ -39,7 +39,7 @@ import view.CanvasTextureGrid;
 import view.DesignTokens;
 
 /**
- * Controlador principal de la aplicación Iron.
+ * Controlador principal de la aplicación Bedrock Texture Resizer.
  * Gestiona la interacción del usuario con la interfaz gráfica.
  * 
  * Responsabilidades:

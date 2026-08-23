@@ -1,6 +1,8 @@
-# Iron — Texture Resizer for Minecraft Bedrock
+# Bedrock Texture Resizer
 
 A lightweight JavaFX desktop tool for batch-resizing textures in **Minecraft Bedrock Edition** resource packs. Point it at a resource pack folder, preview every texture on a fast canvas-based grid, and downscale individual or bulk-selected textures with a single click.
+
+![Bedrock Texture Resizer 1.2.0 interface](https://ik.imagekit.io/dmNtb25nZQ/Bedrock%20Texture%20Resizer/BedrockTextureResizer1.2.0.webp)
 
 ## Download
 
@@ -46,7 +48,7 @@ single Windows fat JAR:
 
 ```powershell
 mvn clean package
-java -jar target/iron-1.1.0-windows.jar
+java -jar target/iron-1.2.0-windows.jar
 ```
 
 The packaged entry point is `view.IronLauncher`, which delegates to the JavaFX

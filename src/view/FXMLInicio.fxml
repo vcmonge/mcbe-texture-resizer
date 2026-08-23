@@ -8,7 +8,7 @@
 <?import javafx.scene.text.*?>
 
 <!--
-    Main view of the Iron — Texture Resizer application.
+    Main view of the Bedrock Texture Resizer application.
     Contains:
     - Top bar with folder selector and controls
     - TabPane with tabs for Blocks, Items, Environment and Entity
@@ -31,7 +31,7 @@
         <VBox styleClass="header-container">
             <!-- Title -->
             <HBox alignment="CENTER" styleClass="title-bar">
-                <Label text="Texture Resizer | Minecraft Bedrock" styleClass="app-title"/>
+                <Label text="Bedrock Texture Resizer" styleClass="app-title"/>
             </HBox>
             
             <!-- Main controls: folder selector -->
